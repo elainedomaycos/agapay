@@ -163,7 +163,11 @@ export default function App() {
   const isStandalone =
     screen === "landing" ||
     screen === "role-select" ||
-    screen === "admin-login"
+    screen === "admin-login" ||
+    screen === "login" ||
+    screen === "register" ||
+    screen === "otp" ||
+    screen === "welcome"
 
   if (isStandalone || isAdminArea) {
     return (
