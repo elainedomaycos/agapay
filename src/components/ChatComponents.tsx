@@ -268,6 +268,10 @@ function OptionsCard({ options, onSelect }: { options: OptionItem[]; onSelect: (
 }
 
 /* ── Card Router ── */
+function cardData(card: MessageCard): Record<string, unknown> {
+  return { ...(card.data ?? {}), actions: card.actions };
+}
+
 function MessageCardView({
   card,
   onOptionSelect,
@@ -279,21 +283,21 @@ function MessageCardView({
 }) {
   switch (card.type) {
     case 'clinic_list':
-      return card.data ? <ClinicListCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <ClinicListCard data={cardData(card)} onAction={onAction} /> : null;
     case 'clinic_detail':
-      return card.data ? <ClinicDetailCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <ClinicDetailCard data={cardData(card)} onAction={onAction} /> : null;
     case 'doctor_select':
-      return card.data ? <DoctorSelectCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <DoctorSelectCard data={cardData(card)} onAction={onAction} /> : null;
     case 'service_select':
-      return card.data ? <ServiceSelectCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <ServiceSelectCard data={cardData(card)} onAction={onAction} /> : null;
     case 'date_select':
-      return card.data ? <DateSelectCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <DateSelectCard data={cardData(card)} onAction={onAction} /> : null;
     case 'slot_select':
-      return card.data ? <SlotSelectCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <SlotSelectCard data={cardData(card)} onAction={onAction} /> : null;
     case 'booking_review':
-      return card.data ? <BookingReviewCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <BookingReviewCard data={cardData(card)} onAction={onAction} /> : null;
     case 'appointment':
-      return card.data ? <AppointmentCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <AppointmentCard data={cardData(card)} onAction={onAction} /> : null;
     case 'health_record':
       return card.data ? <HealthRecordCard data={card.data} /> : null;
     case 'qr_code':
@@ -301,7 +305,7 @@ function MessageCardView({
     case 'queue':
       return card.data ? <QueueCard data={card.data} /> : null;
     case 'booking_confirm':
-      return card.data ? <BookingConfirmCard data={card.data} onAction={onAction} /> : null;
+      return card.data ? <BookingConfirmCard data={cardData(card)} onAction={onAction} /> : null;
     case 'options':
       return card.options ? <OptionsCard options={card.options} onSelect={onOptionSelect} /> : null;
     default:
