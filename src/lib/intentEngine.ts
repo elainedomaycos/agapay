@@ -463,8 +463,15 @@ export function processCardAction(action: CardAction, session: BookingSession): 
     case 'book_clinic': {
       const clinic = MOCK_CLINICS.find(c => c.id === data.clinicId) ?? session.clinic;
       if (!clinic) return showClinicResults(session);
-      const next: BookingSession = { ...session, active: true, step: 'doctor', clinic, doctor: undefined, service: undefined };
-      return { messages: doctorSelectMessage(next), session: next };
+      const doctor = clinic.doctors[0];
+      const service = clinic.services[0];
+      const date = nextDates()[0];
+      if (!doctor || !service || !date) {
+        const next: BookingSession = { ...session, active: true, step: 'doctor', clinic, doctor: undefined, service: undefined };
+        return { messages: doctorSelectMessage(next), session: next };
+      }
+      const next: BookingSession = { ...session, active: true, step: 'slot', clinic, doctor, service, date };
+      return { messages: slotSelectMessage(next), session: next };
     }
 
     case 'back_to_results':
