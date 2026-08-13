@@ -2,8 +2,30 @@ import { useSyncExternalStore } from "react"
 import type { Appointment } from "../types"
 import { MOCK_APPOINTMENTS } from "../data/mockData"
 
-let appointments: Appointment[] = [...MOCK_APPOINTMENTS]
+const STORAGE_KEY = "agapay.appointments"
+
+function loadInitial(): Appointment[] {
+  if (typeof window === "undefined") return [...MOCK_APPOINTMENTS]
+  try {
+    const raw = window.localStorage.getItem(STORAGE_KEY)
+    if (!raw) return [...MOCK_APPOINTMENTS]
+    const parsed = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return [...MOCK_APPOINTMENTS]
+    return parsed as Appointment[]
+  } catch {
+    return [...MOCK_APPOINTMENTS]
+  }
+}
+
+let appointments: Appointment[] = loadInitial()
 const listeners = new Set<() => void>()
+
+function persist() {
+  try {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(appointments))
+  } catch {
+  }
+}
 
 function emit() {
   listeners.forEach((listener) => listener())
@@ -22,6 +44,7 @@ export function subscribe(listener: () => void): () => void {
 
 export function addAppointment(appointment: Appointment): void {
   appointments = [appointment, ...appointments]
+  persist()
   emit()
 }
 
@@ -30,6 +53,7 @@ export function updateAppointment(
   patch: Partial<Appointment>,
 ): void {
   appointments = appointments.map((a) => (a.id === id ? { ...a, ...patch } : a))
+  persist()
   emit()
 }
 
