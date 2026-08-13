@@ -147,15 +147,20 @@ export function ClinicDetailCard({
           <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1.5">Doctors</p>
           <div className="space-y-1.5">
             {clinic.doctors.map(d => (
-              <div key={d.id} className="flex items-center gap-2 text-sm bg-gray-50 rounded-xl px-3 py-2">
+              <button
+                key={d.id}
+                onClick={() => onAction({ type: 'select_doctor', label: `Select ${d.name}`, data: { doctorId: d.id } })}
+                className="w-full flex items-center gap-2 text-sm bg-gray-50 rounded-xl px-3 py-2 hover:bg-agapay-50 transition-colors text-left"
+              >
                 <div className="w-7 h-7 bg-agapay-100 rounded-full flex items-center justify-center text-agapay-700 text-xs font-bold flex-shrink-0">
                   {d.name.split(' ').slice(-1)[0][0]}
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <p className="font-medium text-gray-800 truncate">{d.name}</p>
                   <p className="text-xs text-gray-400">{d.specialty}{d.years ? ` · ${d.years} yrs` : ''}</p>
                 </div>
-              </div>
+                <span className="text-agapay-600 text-xs font-semibold">Select →</span>
+              </button>
             ))}
           </div>
         </div>

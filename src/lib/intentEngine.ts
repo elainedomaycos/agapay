@@ -480,8 +480,13 @@ export function processCardAction(action: CardAction, session: BookingSession): 
     case 'select_doctor': {
       const doctor = session.clinic?.doctors.find(d => d.id === data.doctorId);
       if (!doctor) return { messages: doctorSelectMessage(session), session };
-      const next: BookingSession = { ...session, step: 'service', doctor };
-      return { messages: serviceSelectMessage(next), session: next };
+      const service = session.clinic?.services[0];
+      if (!service) {
+        const next: BookingSession = { ...session, step: 'service', doctor };
+        return { messages: serviceSelectMessage(next), session: next };
+      }
+      const next: BookingSession = { ...session, step: 'date', doctor, service };
+      return { messages: dateSelectMessage(next), session: next };
     }
 
     case 'select_service': {
