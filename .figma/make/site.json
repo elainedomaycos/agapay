@@ -1,0 +1,14 @@
+{
+  "title": "AGAPAY",
+  "description": "Simplifies task execution by enabling users to quickly perform actions with minimal input, enhancing productivity and workflow efficiency.",
+  "icons": {
+    "icon": "/logo.png"
+  },
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
